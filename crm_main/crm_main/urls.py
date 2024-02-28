@@ -8,6 +8,7 @@ from userprofile.views import signup
 urlpatterns = [
     path('', index, name='index'),
     path('admin/', admin.site.urls),
+    path('dashboard/leads/', include('lead.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('sign-up/', signup, name='signup'),
     path('log-in/',views.LoginView.as_view(template_name='userprofile/login.html') ,name='login'),
