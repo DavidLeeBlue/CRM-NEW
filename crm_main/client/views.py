@@ -33,3 +33,28 @@ def client_add(request):
     return render(request, 'client/clients_add.html',{
         'form': form
     }) # one slash here.
+
+@login_required
+def clients_delete(request, pk):
+    client = get_object_or_404(Client, created_by=request.user,pk=pk)
+    client.delete()
+    messages.success(request, client.name + 'The clent has been deleted successfully!')
+    # return redirect('/dashboard/clients')
+    return redirect('clients_list')
+
+@login_required
+def clients_edit(request, pk):
+    client = get_object_or_404(Client, created_by=request.user,pk=pk)
+    if request.method == 'POST':
+        form = AddClientForm(request.POST, instance=client)
+        if form.is_valid():
+            client.save()
+            # messages.success(request, lead.name . ' The lead has been edited successfully!')
+            messages.success(request, client.name + ' The lead has been edited successfully!')
+            return redirect('clients_list')
+    else:
+        form = AddClientForm(instance=client)
+    return render(request, 'client/clients_edit.html',{
+        'form': form
+    }) # one slash here.
+
