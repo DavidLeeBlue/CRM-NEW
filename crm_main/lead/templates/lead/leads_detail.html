@@ -43,15 +43,15 @@
 	  
 	  
 	</div>
-  </div>
   
+</div>
+
   <br/><br/>
-  <a href="{% url 'leads_list' %}" class="btn btn-secondary">Back</a>
-  
+  <a href="{% url 'leads_list' %}" class="btn btn-primary">Back</a>
+  <a href="{% url 'leads_edit' lead.id %}" class="btn btn-info">Update Record</a>
+  <a href="{% url 'leads_convert' lead.id %}" class="btn btn-success">Convert to Client</a>
   <a href="{% url 'leads_delete' lead.id %}" class="btn btn-danger">Delete</a>
   
-  <a href="{% url 'leads_edit' lead.id %}" class="btn btn-secondary">Update Record</a>
-		  
 
  <!-- ------------------------------------------------------- -->
 
