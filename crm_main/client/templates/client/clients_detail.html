@@ -1,0 +1,57 @@
+{% extends 'core/base.html' %} 
+
+ {% block title %}clients details{% endblock %}
+
+ {% block content %}
+ <!-- ------------------------------------------------------- -->
+
+
+
+ <div class="card">
+	<div class="card-header"><strong>
+		  {{ client.name }} 
+		</strong>
+	</div>
+	<div class="card-body">
+  
+  
+  
+  <p class="card-text">
+  <strong>Email: </strong>{{ client.email }}</p>
+  
+  <p class="card-text">
+  <strong>description: </strong>{{ client.description }}
+  </p>
+  
+  <p class="card-text">
+  <strong>priority: </strong>{{ client.priority }}</p>
+  
+  <p class="card-text">
+  <strong>status: </strong>{{ client.status }}</p>
+  
+  <p class="card-text">
+  <strong>created_by: </strong>{{ client.created_by }}</p>
+  
+  <p class="card-text">
+  <strong>created_at: </strong>{{ client.created_at }}</p>
+  
+  <p class="card-text">
+  <strong>modified_at: </strong>{{ client.modified_at }}</p>
+  
+  <p class="card-text">
+  <strong>ID: </strong>{{ client.id }}</p>
+	  
+	  
+	</div>
+  
+</div>
+
+  <br/><br/>
+  <a href="{% url 'clients_list' %}" class="btn btn-primary">Back</a>
+  <a href="{% url 'clients_edit' client.id %" class="btn btn-info">Update Record</a>
+  <a href="{% url 'clients_delete' client.id %" class="btn btn-danger">Delete</a>
+  
+
+ <!-- ------------------------------------------------------- -->
+
+ {% endblock %}
