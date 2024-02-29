@@ -1,0 +1,58 @@
+{% extends 'core/base.html' %} 
+
+ {% block title %}Leads details{% endblock %}
+
+ {% block content %}
+ <!-- ------------------------------------------------------- -->
+
+
+
+ <div class="card">
+	<div class="card-header"><strong>
+		  {{ lead.name }} 
+		</strong>
+	</div>
+	<div class="card-body">
+  
+  
+  
+  <p class="card-text">
+  <strong>Email: </strong>{{ lead.email }}</p>
+  
+  <p class="card-text">
+  <strong>description: </strong>{{ lead.description }}
+  </p>
+  
+  <p class="card-text">
+  <strong>priority: </strong>{{ lead.priority }}</p>
+  
+  <p class="card-text">
+  <strong>status: </strong>{{ lead.status }}</p>
+  
+  <p class="card-text">
+  <strong>created_by: </strong>{{ lead.created_by }}</p>
+  
+  <p class="card-text">
+  <strong>created_at: </strong>{{ lead.created_at }}</p>
+  
+  <p class="card-text">
+  <strong>modified_at: </strong>{{ lead.modified_at }}</p>
+  
+  <p class="card-text">
+  <strong>ID: </strong>{{ lead.id }}</p>
+	  
+	  
+	</div>
+  </div>
+  
+  <br/><br/>
+  <a href="{% url 'leads_list' %}" class="btn btn-secondary">Back</a>
+  
+  <a href="{% url 'leads_delete' lead.id %}" class="btn btn-danger">Delete</a>
+  
+  <a href="{% url 'leads_edit' lead.id %}" class="btn btn-secondary">Update Record</a>
+		  
+
+ <!-- ------------------------------------------------------- -->
+
+ {% endblock %}
