@@ -8,8 +8,10 @@ from .models import Lead
 
 @login_required
 def leads_list(request):
-    leads_list = Lead.objects.filter(created_by=request.user)
-    return render(request, 'lead/leads_list.html')
+    leads = Lead.objects.filter(created_by=request.user)
+    return render(request, 'lead/leads_list.html',{
+        'leads': leads
+    })
 
 
 @login_required
