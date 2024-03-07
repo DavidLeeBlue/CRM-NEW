@@ -1,0 +1,58 @@
+{% extends 'core/base.html' %} 
+
+ {% block title %}Products details{% endblock %}
+
+ {% block content %}
+ <!-- ------------------------------------------------------- -->
+
+
+
+ <div class="card">
+	<div class="card-header"><strong>
+		  {{ product.name }} 
+		</strong>
+	</div>
+	<div class="card-body">
+  
+  
+  
+  <p class="card-text">
+  <strong>Email: </strong>{{ product.email }}</p>
+  
+  <p class="card-text">
+  <strong>description: </strong>{{ product.description }}
+  </p>
+  
+  <p class="card-text">
+  <strong>priority: </strong>{{ product.priority }}</p>
+  
+  <p class="card-text">
+  <strong>status: </strong>{{ product.status }}</p>
+  
+  <p class="card-text">
+  <strong>created_by: </strong>{{ product.created_by }}</p>
+  
+  <p class="card-text">
+  <strong>created_at: </strong>{{ product.created_at }}</p>
+  
+  <p class="card-text">
+  <strong>modified_at: </strong>{{ product.modified_at }}</p>
+  
+  <p class="card-text">
+  <strong>ID: </strong>{{ product.id }}</p>
+	  
+	  
+	</div>
+  
+</div>
+
+  <br/><br/>
+  <a href="{% url 'products_list' %}" class="btn btn-primary">Back</a>
+  <a href="{% url 'products_edit' product.id %" class="btn btn-info">Update Record</a>
+  <a href="{% url 'products_convert' product.id %" class="btn btn-success">Convert to Client</a>
+  <a href="{% url 'products_delete' product.id %" class="btn btn-danger">Delete</a>
+  
+
+ <!-- ------------------------------------------------------- -->
+
+ {% endblock %}

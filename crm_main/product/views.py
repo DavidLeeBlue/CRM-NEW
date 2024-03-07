@@ -15,13 +15,14 @@ def products_list(request):
         'products': products
     })
 
-# @login_required
-# def products_detail(request, pk):
-#     Product = get_object_or_404(Product, created_by=request.user,pk=pk)
-#     # Product = Product.objects.filter(created_by=request.user).get(pk = pk)
-#     return render(request,'Product/products_detail.html',{
-#         'Product':Product
-#     })
+@login_required
+def products_detail(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    # Product = get_object_or_404(Product, created_by=request.user,pk=pk)
+    # Product = Product.objects.filter(created_by=request.user).get(pk = pk)
+    return render(request,'product/products_detail.html',{
+        'product':product
+    })
 
 # @login_required
 # def products_delete(request, pk):
@@ -43,7 +44,7 @@ def products_list(request):
 #             return redirect('products_list')
 #     else:
 #         form = AddProductForm(instance=Product)
-#     return render(request, 'Product/products_edit.html',{
+#     return render(request, 'product/products_edit.html',{
 #         'form': form
 #     }) # one slash here.
 
@@ -60,7 +61,7 @@ def products_list(request):
 #             return redirect('products_list')
 #     else:
 #         form = AddProductForm()
-#     return render(request, 'Product/add_Product.html',{
+#     return render(request, 'product/add_Product.html',{
 #         'form': form
 #     }) # one slash here.
 

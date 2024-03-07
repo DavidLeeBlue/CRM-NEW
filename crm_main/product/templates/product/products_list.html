@@ -11,6 +11,10 @@
         <th scope="col">price</th>
         <th scope="col">stock_quantity</th>
         <th scope="col">description</th>
+        <!-- <th scope="col">Status</th> -->
+        <th scope="col">Created_by</th>
+        <th scope="col">Created_at</th>
+        <th scope="col">Modified_at</th>
         <th scope="col">ID</th>
       </tr>
     </thead>
@@ -20,14 +24,14 @@
       {% for product in products %}
           <tr>
               <td>{{ product.name }}</td>
-              <td>{{ product.email }}</td>
+              <td>{{ product.price }}</td>
+              <td>{{ product.stock_quantity }}</td>
               <td>{{ product.description }}</td>
-              <td>{{ product.priority }}</td>
-              <td>{{ product.status }}</td>
+              <!-- <td>{{ product.status }}</td> -->
               <td>{{ product.created_by }}</td>
               <td>{{ product.created_at }}</td>
               <td>{{ product.modified_at }}</td>
-              <td><a href="{% url 'products_detail' product.id %">{{ product.id }}</a></td> 
+              <td><a href="{% url 'products_detail' product.id %}">{{ product.id }}</a></td> 
         <!-- % url 'product' product.id %} -->
           </tr>
         
