@@ -49,32 +49,20 @@ def products_edit(request, pk):
     }) # one slash here.
 
 
-# @login_required
-# def add_Product(request):
-#     if request.method == 'POST':
-#         form = AddProductForm(request.POST)
-#         if form.is_valid():
-#             Product = form.save(commit=False) # don't save the form yet, need to add created_by
-#             Product.created_by = request.user
-#             Product.save()
-#             messages.success(request, 'The Product has been added successfully!')
-#             return redirect('products_list')
-#     else:
-#         form = AddProductForm()
-#     return render(request, 'product/add_Product.html',{
-#         'form': form
-#     }) # one slash here.
+@login_required
+def products_add(request):
+    if request.method == 'POST':
+        form = AddProductForm(request.POST)
+        if form.is_valid():
+            product = form.save(commit=False) # don't save the form yet, need to add created_by
+            product.created_by = request.user
+            product.save()
+            messages.success(request, 'The Product has been added successfully!')
+            return redirect('products_list')
+    else:
+        form = AddProductForm()
+    return render(request, 'product/products_add.html',{
+        'form': form
+    }) # one slash here.
 
-# @login_required
-# def convert_to_client(request, pk):
-#     Product = get_object_or_404(Product, created_by=request.user,pk=pk)
-#     client = Client.objects.create(
-#         name = Product.name,
-#         email = Product.email,
-#         description = Product.description,
-#         created_by = request.user
-#     )
-#     Product.converted_to_client = True
-#     Product.save()
-#     messages.success(request, 'The Product has been converted to client successfully!')
-#     return redirect('products_list')
+

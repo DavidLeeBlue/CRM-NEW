@@ -7,5 +7,5 @@ urlpatterns = [
     path('<int:pk>/delete/', views.products_delete, name='products_delete'),
     path('<int:pk>/edit/', views.products_edit, name='products_edit'),
     # path('<int:pk>/convert/', views.convert_to_client, name='products_convert'),
-    # path('add-lead/', views.add_lead, name='add_lead'),
+    path('add/', views.products_add, name='products_add'),
 ]
