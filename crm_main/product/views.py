@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 # Create your views here.
 from django.contrib.auth.decorators import login_required
-# from .forms import AddProductForm
+from .forms import AddProductForm
 from .models import Product
 from django.contrib import messages
 # from client.models import Client
@@ -32,21 +32,21 @@ def products_delete(request, pk):
     # return redirect('/dashboard/products')
     return redirect('products_list')
 
-# @login_required
-# def products_edit(request, pk):
-#     product = get_object_or_404(Product, created_by=request.user,pk=pk)
-#     if request.method == 'POST':
-#         form = AddProductForm(request.POST, instance=Product)
-#         if form.is_valid():
-#             Product.save()
-#             # messages.success(request, Product.name . ' The Product has been edited successfully!')
-#             messages.success(request, Product.name + ' The Product has been edited successfully!')
-#             return redirect('products_list')
-#     else:
-#         form = AddProductForm(instance=Product)
-#     return render(request, 'product/products_edit.html',{
-#         'form': form
-#     }) # one slash here.
+@login_required
+def products_edit(request, pk):
+    product = get_object_or_404(Product, created_by=request.user,pk=pk)
+    if request.method == 'POST':
+        form = AddProductForm(request.POST, instance=product)
+        if form.is_valid():
+            product.save()
+            # messages.success(request, Product.name . ' The Product has been edited successfully!')
+            messages.success(request, product.name + ' The Product has been edited successfully!')
+            return redirect('products_list')
+    else:
+        form = AddProductForm(instance=product)
+    return render(request, 'product/products_edit.html',{
+        'form': form
+    }) # one slash here.
 
 
 # @login_required
