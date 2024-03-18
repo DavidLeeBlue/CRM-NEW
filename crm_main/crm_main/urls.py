@@ -11,7 +11,7 @@ urlpatterns = [
     path('dashboard/leads/', include('lead.urls')),
     path('dashboard/clients/', include('client.urls')),
     path('dashboard/products/', include('product.urls')),
-    path('dashboard/order/', include('order.urls')),
+    path('dashboard/orders/', include('order.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('sign-up/', signup, name='signup'),
     path('log-in/',views.LoginView.as_view(template_name='userprofile/login.html') ,name='login'),

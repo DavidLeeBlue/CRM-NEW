@@ -1,0 +1,64 @@
+{% extends 'core/base.html' %} 
+
+ {% block title %} Clients List {% endblock %}
+
+ {% block content %}
+ 
+ <table class="table table-striped table-hover table-bordered">
+    <thead class="table-dark">
+      <tr>
+        <th scope="col">order_number</th>
+        <th scope="col">status</th>
+        <th scope="col">total</th>
+        <th scope="col">shipment_company</th>
+        <th scope="col">tracking_number</th>
+        <th scope="col">shiping_fee</th>
+        <th scope="col">order_date</th>
+        <th scope="col">order_id</th>
+        <th scope="col">created_by_id</th>
+        <!-- <th scope="col">1</th> -->
+        <th scope="col">Created_by</th>
+        <th scope="col">Created_at</th>
+        <th scope="col">Modified_at</th>
+        <th scope="col">ID</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+  {% if orders %}
+      {% for order in orders %}
+          <tr>
+              <td>{{ order.order_number }}</td>
+              <td>{{ order.status }}</td>
+              <td>{{ order.total }}</td>
+              <td>{{ order.shipment_company }}</td>
+              <td>{{ order.tracking_number }}</td>
+              <td>{{ order.shiping_fee }}</td>
+              <td>{{ order.order_date }}</td>
+              <td>{{ order.created_by_id }}</td>
+              <td>{{ order.status }}</td>
+              <td>{{ order.created_by }}</td>
+              <td>{{ order.created_at }}</td>
+              <td>{{ order.modified_at }}</td>
+              <td><a href="{% url 'orders_detail' order.id %">{{ order.id }}</a></td> 
+        <!-- % url 'order' order.id %} -->
+          </tr>
+        
+
+      {% endfor %}
+  {% else %}
+      <tr>
+          <td colspan="9">No orders found</td>
+      </tr>
+  
+  {% endif %}
+  
+      
+        </tbody>
+      
+      </table>
+      <a href="{% url 'orders_add' %" class="btn btn-danger">Add order</a>
+ {% endblock %}
+
+
+ 
