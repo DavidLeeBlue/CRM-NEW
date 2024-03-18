@@ -5,4 +5,4 @@ class AddOrderForm(forms.ModelForm):
     class Meta:
         model = Order
         # fields = ('name', 'email', 'description', 'priority', 'status',)
-        fields = ('name', 'email', 'description',)
+        fields = ('order_number', 'client', 'status','total','status',) # should eidt order date here.
