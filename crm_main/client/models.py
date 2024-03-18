@@ -14,4 +14,4 @@ class Client(models.Model):
     modified_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-            return self.name
+            return self.name # This is the string representation of the object

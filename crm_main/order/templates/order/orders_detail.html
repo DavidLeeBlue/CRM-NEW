@@ -1,0 +1,59 @@
+{% extends 'core/base.html' %} 
+
+ {% block title %}orders details{% endblock %}
+
+ {% block content %}
+ <!-- ------------------------------------------------------- -->
+
+
+ <div class="card">
+	<div class="card-header"><strong>
+		  {{ order.order_number }} 
+		</strong>
+	</div>
+	<div class="card-body">
+  
+  
+  
+  <p class="card-text">
+  <strong>Client: </strong>{{ order.client }}</p>
+  
+  <p class="card-text">
+  <strong>Status: </strong>{{ order.status }}
+  </p>
+  
+  <p class="card-text">
+  <strong>Total: </strong>{{ order.total }}</p>
+  
+  <p class="card-text">
+  <strong>Status: </strong>{{ order.status }}</p>
+  
+  <p class="card-text">
+  <strong>Created_by: </strong>{{ order.created_by }}</p>
+  
+  <p class="card-text">
+  <strong>Order_date: </strong>{{ order.order_date }}</p>
+  
+  <p class="card-text">
+  <strong>Created_at: </strong>{{ order.created_at }}</p>
+  
+  <p class="card-text">
+  <strong>Modified_at: </strong>{{ order.modified_at }}</p>
+  
+  <p class="card-text">
+  <strong>ID: </strong>{{ order.id }}</p>
+	  
+	  
+	</div>
+  
+</div>
+
+  <br/><br/>
+  <a href="{% url 'orders_list' %}" class="btn btn-primary">Back</a>
+  <a href="{% url 'orders_edit' order.id %" class="btn btn-info">Update Client</a>
+  <a href="{% url 'orders_delete' order.id %" class="btn btn-danger">Delete</a>
+  
+
+ <!-- ------------------------------------------------------- -->
+
+ {% endblock %}

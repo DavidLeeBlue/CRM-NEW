@@ -12,10 +12,10 @@ def orders_list(request):
     # orders = get_object_or_404(Order, created_by=request.user)
     return render(request, 'order/orders_list.html',{ 'orders': orders })
 
-# @login_required
-# def order_detail(request, pk):
-#     order = get_object_or_404(Order,created_by=request.user, pk=pk)
-#     return render(request, 'order/orders_detail.html', {'order': order})
+@login_required
+def order_detail(request, pk):
+    order = get_object_or_404(Order,created_by=request.user, pk=pk)
+    return render(request, 'order/orders_detail.html', {'order': order})
 
 
 # @login_required
