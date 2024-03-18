@@ -26,7 +26,7 @@ def order_add(request):
             order = form.save(commit=False) # don't save the form yet, need to add created_by
             order.created_by = request.user
             order.save()
-            messages.success(request, 'The lead has been added successfully!')
+            messages.success(request, order.order_number +  'The order has been added successfully!')
             return redirect('orders_list')
     else:
         form = AddOrderForm()
@@ -34,13 +34,13 @@ def order_add(request):
         'form': form
     }) # one slash here.
 
-# @login_required
-# def orders_delete(request, pk):
-#     order = get_object_or_404(Order, created_by=request.user,pk=pk)
-#     order.delete()
-#     messages.success(request, order.name + 'The clent has been deleted successfully!')
-#     # return redirect('/dashboard/orders')
-#     return redirect('orders_list')
+@login_required
+def orders_delete(request, pk):
+    order = get_object_or_404(Order, created_by=request.user,pk=pk)
+    order.delete()
+    messages.success(request, order.order_number + ' The order has been deleted successfully!')
+    # return redirect('/dashboard/orders')
+    return redirect('orders_list')
 
 @login_required
 def orders_edit(request, pk):
@@ -50,7 +50,7 @@ def orders_edit(request, pk):
         if form.is_valid():
             order.save()
             # messages.success(request, lead.name . ' The lead has been edited successfully!')
-            messages.success(request, order.name + ' The lead has been edited successfully!')
+            messages.success(request, order.order_number + ' The order has been edited successfully!')
             return redirect('orders_list')
     else:
         form = AddOrderForm(instance=order)
