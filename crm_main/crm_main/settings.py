@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'dashboard',
     'product',
     'order',
+    'ordernew',
     'dynamic_breadcrumbs',
 ]
 
