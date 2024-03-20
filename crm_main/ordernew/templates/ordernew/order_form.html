@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if order_form.instance.pk %}Update Order{% else %}Create Order{% endif %}</title>
+</head>
+<body>
+    <h1>{% if order_form.instance.pk %}Update Order{% else %}Create Order{% endif %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ order_form.as_p }}
+        {{ order_product_formset.as_p }}
+        <button type="submit">{% if order_form.instance.pk %}Update{% else %}Create{% endif %} Order</button>
+    </form>
+</body>
+</html>

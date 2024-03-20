@@ -1,0 +1,50 @@
+{% extends 'core/base.html' %}
+
+{% block title %}ordersNew details{% endblock %}
+
+{% block content %}
+<!-- ------------------------------------------------------- -->
+
+
+<h1 class="mt-5">Order Detail - {{ order.order_number }}</h1>
+<div class="row mt-4">
+    <div class="col-md-6">
+        <p><strong>Order Status:</strong> {{ order.status }}</p>
+        <p><strong>Total:</strong> {{ order.total }}</p>
+        <p><strong>Id:</strong> {{ order.id }}</p>
+    </div>
+</div>
+<h2 class="mt-5">Order Products</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Unit Price</th>
+            <th>Quantity</th>
+            <th>Total Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order_product in order_products %}
+        <tr>
+            <td>{{ order_product.product.name }}</td>
+            <td>{{ order_product.unit_price }}</td>
+            <td>{{ order_product.quantity }}</td>
+            <td>{{ order_product.total_price }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<!-- Add an update button -->
+<!-- <form action="{% url 'order_update' order.id %}" method="post">
+    <button type="submit">Update Order</button>
+</form> -->
+
+<form action="{% url 'order_update' order.id %}" method="POST">
+    {% csrf_token %}
+    <button type="submit">Update Order</button>
+</form>
+
+<!-- ------------------------------------------------------- -->
+
+{% endblock %}

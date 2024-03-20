@@ -20,8 +20,8 @@
     </thead>
     <tbody>
       
-  {% if leads %}
-      {% for lead in leads %}
+  {% if object_list %}
+      {% for lead in object_list %}
           <tr>
               <td>{{ lead.name }}</td>
               <td>{{ lead.email }}</td>
