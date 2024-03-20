@@ -1,8 +1,10 @@
+from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
 
 # Create your views here.
 from django.contrib.auth.decorators import login_required
-# from .forms import AddLeadForm
+# from .forms import AddLeadForm, AddCommentForm
+from .forms import AddCommentForm
 from .models import Lead
 from django.contrib import messages
 from client.models import Client
@@ -17,6 +19,7 @@ class LeadListView(ListView):
     def dispatch(self, *args, **kwargs):
         return super(LeadListView, self).dispatch(*args, **kwargs)
 
+
     def get_queryset(self): # this is the method that is called when the view is loaded, it returns the queryset that is used to populate the list of leads.
         queryset = super(LeadListView,self).get_queryset()
         return queryset.filter(created_by=self.request.user, converted_to_client=False)
@@ -25,8 +28,15 @@ class LeadListView(ListView):
 class LeadDetailView(DetailView):
     model = Lead
     @method_decorator(login_required)
-    def dispatch(self, *args, **kwargs):
-        return super().dispatch(*args, **kwargs)
+    def dispatch(self, *args, **kwargs):#*args is used to pass any number of arguments to the method, **kwargs is used to pass any additional arguments to the method.
+        return super().dispatch(*args, **kwargs) # this method is used to check if the user is logged in before they can access the view. **kwargs is used to pass any additional arguments to the method.
+    
+    def get_context_data(self, **kwargs): # this method is used to pass additional context to the template, in this case, the AddCommentForm form.
+        context = super().get_context_data(**kwargs)
+        context['form'] = AddCommentForm()
+        # context['fileform'] = AddFileForm()
+
+        return context
 
     def get_queryset(self):
         queryset = super(LeadDetailView, self).get_queryset()
@@ -35,19 +45,8 @@ class LeadDetailView(DetailView):
         # return queryset.filter(team=team, pk=self.kwargs.get('pk'))
         return queryset.filter(pk=self.kwargs.get('pk'))
 
-# @login_required
-# def leads_detail(request, pk):
-#     lead = get_object_or_404(Lead, created_by=request.user,pk=pk)
-#     # lead = Lead.objects.filter(created_by=request.user).get(pk = pk)
-#     return render(request,'lead/leads_detail.html',{
-#         'lead':lead
-#     })
-
-
-# class LeadDeleteView(LoginRequiredMixin, DeleteView):
 class LeadDeleteView(DeleteView):
     model = Lead
-    # success_url = reverse_lazy('leads:list')
     success_url = reverse_lazy('leads_list')
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -56,23 +55,15 @@ class LeadDeleteView(DeleteView):
     def get_queryset(self):
         queryset = super(LeadDeleteView, self).get_queryset()
         # team = self.request.user.userprofile.active_team
-
         return queryset.filter(created_by=self.request.user, pk=self.kwargs.get('pk'))
     
     # skip the get_queryset method and use the get method instead.
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
-
-# @login_required
-# def leads_delete(request, pk):
-#     lead = get_object_or_404(Lead, created_by=request.user,pk=pk)
-#     lead.delete()
-#     messages.success(request, 'The lead has been deleted successfully!')
-#     # return redirect('/dashboard/leads')
-#     return redirect('leads_list')
+    
 
 
-# class LeadUpdateView(LoginRequiredMixin, UpdateView):
+    
 class LeadUpdateView(UpdateView):
     model = Lead
     fields = ('name', 'email', 'description', 'priority', 'status',)
@@ -92,26 +83,13 @@ class LeadUpdateView(UpdateView):
         queryset = super(LeadUpdateView, self).get_queryset()
         # team = self.request.user.userprofile.active_team
         return queryset.filter(pk=self.kwargs.get('pk'))
+    
+    # add the form_valid method to add a success message
+    def form_valid(self, form):
+        # messages.success(self.request, "Lead updated successfully.")  # Add success message here
+        messages.success(self.request, 'Lead "{}" has been updated successfully!'.format(self.object.name))
+        return super().form_valid(form)
 
-# @login_required
-# def leads_edit(request, pk):
-#     lead = get_object_or_404(Lead, created_by=request.user,pk=pk)
-#     if request.method == 'POST':
-#         form = AddLeadForm(request.POST, instance=lead)
-#         if form.is_valid():
-#             lead.save()
-#             # messages.success(request, lead.name . ' The lead has been edited successfully!')
-#             messages.success(request, lead.name + ' The lead has been edited successfully!')
-#             return redirect('leads_list')
-#     else:
-#         form = AddLeadForm(instance=lead)
-#     return render(request, 'lead/leads_edit.html',{
-#         'form': form
-#     }) # one slash here.
-
-# class LeadCreateView(LoginRequiredMixin, CreateView):
-
-# class LeadCreateView(LoginRequiredMixin, CreateView):
 class LeadCreateView(CreateView):
     model = Lead
     fields = ('name', 'email', 'description', 'priority', 'status',)
@@ -137,25 +115,22 @@ class LeadCreateView(CreateView):
         self.object.save()
         messages.success(self.request, 'Lead "{}" has been added successfully!'.format(self.object.name))
         return redirect(self.get_success_url())
+    
+# class AddCommentView(LoginRequiredMixin, View):
+class AddCommentView(View):
+    def post(self, request, *args, **kwargs):
+        pk = kwargs.get('pk')
 
+        form = AddCommentForm(request.POST)
 
+        if form.is_valid():
+            comment = form.save(commit=False)
+            # comment.team = self.request.user.userprofile.get_active_team()
+            comment.created_by = request.user
+            comment.lead_id = pk
+            comment.save()
 
-
-# @login_required
-# def add_lead(request):
-#     if request.method == 'POST':
-#         form = AddLeadForm(request.POST)
-#         if form.is_valid():
-#             lead = form.save(commit=False) # don't save the form yet, need to add created_by
-#             lead.created_by = request.user
-#             lead.save()
-#             messages.success(request, 'The lead has been added successfully!')
-#             return redirect('leads_list')
-#     else:
-#         form = AddLeadForm()
-#     return render(request, 'lead/add_lead.html',{
-#         'form': form
-#     }) # one slash here.
+        return redirect('leads_detail', pk=pk)
 
 class ConvertToClientView(View):
     def get(self,request,*args,**kwargs):
@@ -189,19 +164,3 @@ class ConvertToClientView(View):
         messages.success(request, 'The lead was converted to a client.')
 
         return redirect('leads_list')
-
-
-
-# @login_required
-# def convert_to_client(request, pk):
-#     lead = get_object_or_404(Lead, created_by=request.user,pk=pk)
-#     client = Client.objects.create(
-#         name = lead.name,
-#         email = lead.email,
-#         description = lead.description,
-#         created_by = request.user
-#     )
-#     lead.converted_to_client = True
-#     lead.save()
-#     messages.success(request, 'The lead has been converted to client successfully!')
-#     return redirect('leads_list')
