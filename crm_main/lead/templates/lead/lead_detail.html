@@ -71,7 +71,7 @@
             {% endfor %}
         </div>
 
-        <form method="post" action="{% url 'add_comment' lead.id %}">
+        <form method="post" action="{% url 'leads:add_comment' lead.id %}">
             {% csrf_token %}
 
             {{ form.as_p }}

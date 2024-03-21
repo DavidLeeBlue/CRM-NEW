@@ -1,0 +1,115 @@
+{% extends 'core/base.html' %} 
+
+ {% block title %}orders details{% endblock %}
+
+ {% block content %}
+ <!-- ------------------------------------------------------- -->
+
+
+ <div class="card">
+	<div class="card-header"><strong>
+		  {{ order.order_number }} 
+		</strong>
+	</div>
+	<div class="card-body">
+  
+  
+  
+  <p class="card-text">
+  <strong>Client: </strong>{{ order.client }}</p>
+  
+  <p class="card-text">
+  <strong>Status: </strong>{{ order.status }}
+  </p>
+  
+  <p class="card-text">
+  <strong>Total: </strong>{{ order.total }}</p>
+  
+  <p class="card-text">
+  <strong>Status: </strong>{{ order.status }}</p>
+  
+  <p class="card-text">
+  <strong>Created_by: </strong>{{ order.created_by }}</p>
+  
+  <p class="card-text">
+  <strong>Order_date: </strong>{{ order.order_date }}</p>
+  
+  <p class="card-text">
+  <strong>Created_at: </strong>{{ order.created_at }}</p>
+  
+  <p class="card-text">
+  <strong>Modified_at: </strong>{{ order.modified_at }}</p>
+  
+  <p class="card-text">
+  <strong>ID: </strong>{{ order.id }}</p>
+	  
+	  
+	</div>
+  
+</div>
+<form id="order_delete_form" method="post" action="{% url 'orders:delete' order.id %}">
+  {% csrf_token %}
+</form>
+
+
+  <br/><br/>
+  <a href="{% url 'orders:list' %}" class="btn btn-primary">Back</a>
+  <a href="{% url 'orders:edit' order.id %}" class="btn btn-info">Update Client</a>
+  <!-- <a href="{% url 'orders:delete' order.id %}" class="btn btn-danger">Delete</a> -->
+  <a href="#" onclick="document.getElementById('order_delete_form').submit();" class="btn btn-danger">Delete</a>
+  
+
+  <hr>
+  <!-- ------------------------------------------------------- display product below-->
+  <!-- comment below ------------------------------------------ -->
+  <hr class="my-4">
+
+  <h2 class="mb-6 text-xl">Order Details: Products</h2>
+
+  <div class="table-responsive">
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Order</th>
+          <th>Product</th>
+          <th>Unit Price</th>
+          <th>Quantity</th>
+          <th>Total Price</th>
+          <th>Order Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in order.order_products.all %}
+        <tr>
+          <td>{{ product.order }}</td>
+          <td>{{ product.product }}</td>
+          <td>{{ product.unit_price }}</td>
+          <td>{{ product.quantity }}</td>
+          <td>{{ product.total_price }}</td>
+          <td>{{ product.order_date }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ------------------------------------------------------- form below -->
+  <hr>
+
+
+
+  <form method="post" action="{% url 'orders:add_product' order.id %}">
+    {% csrf_token %}
+  
+    <div class="row">
+      <div class="col-md-2"> <!-- Adjust the width here -->
+        <div class="form-group">
+          {{ form.as_p }}
+        </div>
+      </div>
+    </div>
+  
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+ {% endblock %}

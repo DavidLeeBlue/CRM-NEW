@@ -22,13 +22,20 @@ class OrderListView(ListView):
         return queryset.filter(created_by=self.request.user)
     
 
+# @login_required
+# def orders_list(request):
+#     orders = Order.objects.filter(created_by=request.user)
+#     # orders = get_object_or_404(Order, created_by=request.user)
+#     return render(request, 'order/orders_list.html',{ 'orders': orders })
+    
+
 class OrderDetailView(DetailView):
     model = Order
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):#*args is used to pass any number of arguments to the method, **kwargs is used to pass any additional arguments to the method.
         return super().dispatch(*args, **kwargs) # this method is used to check if the user is logged in before they can access the view. **kwargs is used to pass any additional arguments to the method.
     
-    def get_context_data(self, **kwargs): # this method is used to pass additional context to the template, in this case, the AddProductForm form.
+    def get_context_data(self, **kwargs): # this method is used to pass additional context to the template, in this case, the AddCommentForm form.
         context = super().get_context_data(**kwargs)
         context['form'] = OrderProductForm()
         # context['fileform'] = AddFileForm()
@@ -41,6 +48,13 @@ class OrderDetailView(DetailView):
 
         # return queryset.filter(team=team, pk=self.kwargs.get('pk'))
         return queryset.filter(pk=self.kwargs.get('pk'))
+
+# @login_required
+# def order_detail(request, pk):
+#     order = get_object_or_404(Order,created_by=request.user, pk=pk)
+#     return render(request, 'order/orders_detail.html', {
+#         'order': order,
+#         'form': OrderProductForm(),})
 
 class OrderDeleteView(DeleteView):
     model = Order
@@ -57,6 +71,15 @@ class OrderDeleteView(DeleteView):
     # skip the get_queryset method and use the get method instead.
     def get(self, request, *args, **kwargs):
         return self.post(request, *args, **kwargs)
+
+
+# @login_required
+# def orders_delete(request, pk):
+#     order = get_object_or_404(Order, created_by=request.user,pk=pk)
+#     order.delete()
+#     messages.success(request, order.order_number + ' The order has been deleted successfully!')
+#     # return redirect('/dashboard/orders')
+#     return redirect('orders:list')
 
 
 
@@ -87,6 +110,21 @@ class OrderCreateView(CreateView):
         messages.success(self.request, 'Order "{}" has been added successfully!'.format(self.object.order_number))
         return redirect(self.get_success_url())
 
+# @login_required
+# def order_add(request):
+#     if request.method == 'POST':
+#         form = AddOrderForm(request.POST)
+#         if form.is_valid():
+#             order = form.save(commit=False) # don't save the form yet, need to add created_by
+#             order.created_by = request.user
+#             order.save()
+#             messages.success(request, order.order_number +  'The order has been added successfully!')
+#             return redirect('orders:list')
+#     else:
+#         form = AddOrderForm()
+#     return render(request, 'order/orders_add.html',{
+#         'form': form
+#     }) # one slash here.
 
 class OrderUpdateView(UpdateView):
     model = Order
@@ -114,18 +152,20 @@ class OrderUpdateView(UpdateView):
         # messages.success(self.request, "Lead updated successfully.")  # Add success message here
         messages.success(self.request, 'Order "{}" has been updated successfully!'.format(self.object.order_number))
         return super().form_valid(form)
+    
+# @login_required
+# def orders_edit(request, pk):
+#     order = get_object_or_404(Order, created_by=request.user,pk=pk)
+#     if request.method == 'POST':
+#         form = AddOrderForm(request.POST, instance=order)
+#         if form.is_valid():
+#             order.save()
+#             # messages.success(request, lead.name . ' The lead has been edited successfully!')
+#             messages.success(request, order.order_number + ' The order has been edited successfully!')
+#             return redirect('orders:list')
+#     else:
+#         form = AddOrderForm(instance=order)
+#     return render(request, 'order/orders_edit.html',{
+#         'form': form
+#     }) # one slash here.
 
-# class AddProductView(LoginRequiredMixin, View):
-class AddProductView(View):
-    def post(self, request, *args, **kwargs):
-        pk = kwargs.get('pk')
-        form = OrderProductForm(request.POST)
-
-        if form.is_valid():
-            product = form.save(commit=False)
-            # comment.team = self.request.user.userprofile.get_active_team()
-            # product.created_by = request.user
-            product.order_id = pk
-            product.save()
-
-        return redirect('orders:detail', pk=pk)
