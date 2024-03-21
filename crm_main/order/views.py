@@ -40,7 +40,7 @@ class OrderDetailView(DetailView):
         # team = self.request.user.userprofile.active_team
 
         # return queryset.filter(team=team, pk=self.kwargs.get('pk'))
-        return queryset.filter(pk=self.kwargs.get('pk'))
+        return queryset.filter(pk=self.kwargs.get('pk')).prefetch_related('order_products')
 
 class OrderDeleteView(DeleteView):
     model = Order

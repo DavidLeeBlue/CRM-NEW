@@ -21,19 +21,19 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'orders:list' %}">Orders</a>
         </li>
-        <li class="nav-item">
+        <!-- <li class="nav-item">
           <a class="nav-link" href="{% url 'order_list' %}">OrdersNew</a>
-        </li>
+        </li> -->
         <li class="nav-item">
           <a class="nav-link" href="{% url 'products:list' %}">Products</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'logout' %}">Logout</a>
-        </li>
+        <!-- <li class="nav-item">
+          <a class="nav-link" href="{% url 'logout' %}">Logout0</a>
+        </li> -->
         <form action="{% url 'logout' %}" method="post">
           {% csrf_token %}
           <button type="submit" class="nav-link"
-            style="border: none; background: none; cursor: pointer;">Logout1</button>
+            style="border: none; background: none; cursor: pointer;">Logout</button>
         </form>
 
         {% else %}

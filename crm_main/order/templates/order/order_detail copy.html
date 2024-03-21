@@ -59,7 +59,22 @@
   <a href="#" onclick="document.getElementById('order_delete_form').submit();" class="btn btn-danger">Delete</a>
   
 
-  <!-- <hr> -->
+  <hr>
+  <h2>Order Products new</h2>
+    <ul>
+        {% for order_product in object.order_products.all %}
+            <li>
+                <strong>{{ order_product.product }}</strong> - 
+                Quantity: {{ order_product.quantity }} - 
+                Price: {{ order_product.unit_price }}
+                <!-- Add other fields as needed -->
+            </li>
+        {% empty %}
+            <li>No products in this order.</li>
+        {% endfor %}
+    </ul>
+  <hr>
+  <hr>
 
   <!-- ------------------------------------------------------- display product below-->
   <!-- order below ------------------------------------------ -->
@@ -68,36 +83,31 @@
   <h2 class="mb-6 text-xl">Order Details: Products</h2>
 
   <div class="table-responsive">
-    <table class="table table-bordered table-striped">
-        <thead class="thead-dark">
-            <tr>
-                <th>Order</th>
-                <th>Product</th>
-                <th>Unit Price</th>
-                <th>Quantity</th>
-                <th>Total Price</th>
-                <th>Order Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for product in object.order_products.all %}
-            <tr>
-                <td>{{ product.order }}</td>
-                <td>{{ product.product }}</td>
-                <td>{{ product.unit_price }}</td>
-                <td>{{ product.quantity }}</td>
-                <td>{{ product.total_price }}</td>
-                <td>{{ product.order_date }}</td>
-            </tr>
-            {% empty %}
-            <tr>
-                <td colspan="6">No products in this order.</td>
-            </tr>
-            {% endfor %}
-        </tbody>
+    <table class="table table-bordered">
+      <thead>
+        <tr>
+          <th>Order</th>
+          <th>Product</th>
+          <th>Unit Price</th>
+          <th>Quantity</th>
+          <th>Total Price</th>
+          <th>Order Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for product in order.order_products.all %}
+        <tr>
+          <td>{{ product.order }}</td>
+          <td>{{ product.product }}</td>
+          <td>{{ product.unit_price }}</td>
+          <td>{{ product.quantity }}</td>
+          <td>{{ product.total_price }}</td>
+          <td>{{ product.order_date }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
     </table>
-</div>
-
+  </div>
 
   <!-- ------------------------------------------------------- form below -->
   <hr>
@@ -107,37 +117,15 @@
   <form method="post" action="{% url 'orders:add_product' order.id %}">
     {% csrf_token %}
   
-   
-<!-- <hr> -->
-
-<h2>Add products to order:</h2>
-<div class="row">
-  <div class="col-md-2">
-    <div class="form-group d-flex align-items-center">
-      <label for="id_product" class="form-label me-2">Product:</label>
-      {{ form.product }}
-    </div>
-  </div>
-  <div class="col-md-2">
-    <div class="form-group d-flex align-items-center">
-      <label for="id_unit_price" class="form-label me-2">Unit_Price:</label>
-      {{ form.unit_price }}
-    </div>
-  </div>
-  <div class="col-md-2">
-    <div class="form-group d-flex align-items-center">
-      <label for="id_quantity" class="form-label me-2">Quantity:</label>
-      {{ form.quantity }}
-    </div>
-  </div>
-</div>
-
-  <br/>
     <div class="row">
-      <div class="col-md-12">
-        <button type="submit" class="btn btn-primary">Submit</button>
+      <div class="col-md-2"> <!-- Adjust the width here -->
+        <div class="form-group">
+          {{ form.as_p }}
+        </div>
       </div>
     </div>
+  
+    <button type="submit" class="btn btn-primary">Submit</button>
   </form>
 
  {% endblock %}
