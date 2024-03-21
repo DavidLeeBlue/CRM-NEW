@@ -1,7 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth.decorators import login_required
 from .models import Order, OrderProduct
-from .forms import AddOrderForm, OrderForm, OrderProductFormSet
+# from .forms import AddOrderForm, OrderForm, OrderProductFormSet
+from .forms import AddOrderForm, OrderForm, OrderProductForm
 from django.contrib import messages
 
 # Create your views here.
@@ -15,8 +16,9 @@ def orders_list(request):
 @login_required
 def order_detail(request, pk):
     order = get_object_or_404(Order,created_by=request.user, pk=pk)
-    return render(request, 'order/orders_detail.html', {'order': order})
-
+    return render(request, 'order/orders_detail.html', {
+        'order': order,
+        'form': OrderProductForm(),})
 
 @login_required
 def order_add(request):
@@ -27,7 +29,7 @@ def order_add(request):
             order.created_by = request.user
             order.save()
             messages.success(request, order.order_number +  'The order has been added successfully!')
-            return redirect('orders_list')
+            return redirect('orders:list')
     else:
         form = AddOrderForm()
     return render(request, 'order/orders_add.html',{
@@ -40,7 +42,7 @@ def orders_delete(request, pk):
     order.delete()
     messages.success(request, order.order_number + ' The order has been deleted successfully!')
     # return redirect('/dashboard/orders')
-    return redirect('orders_list')
+    return redirect('orders:list')
 
 @login_required
 def orders_edit(request, pk):
@@ -51,56 +53,10 @@ def orders_edit(request, pk):
             order.save()
             # messages.success(request, lead.name . ' The lead has been edited successfully!')
             messages.success(request, order.order_number + ' The order has been edited successfully!')
-            return redirect('orders_list')
+            return redirect('orders:list')
     else:
         form = AddOrderForm(instance=order)
     return render(request, 'order/orders_edit.html',{
         'form': form
     }) # one slash here.
 
-# =====================================================================================================
-# =====================================================================================================
-# =====================================================================================================
-# def order_list(request):
-#     orders = Order.objects.all()
-#     return render(request, 'order_list.html', {'orders': orders})
-
-# def order_detail(request, order_id):
-#     order = get_object_or_404(Order, id=order_id)
-#     order_products = OrderProduct.objects.filter(order=order)
-#     return render(request, 'order_detail.html', {'order': order, 'order_products': order_products})
-
-# def order_create(request):
-#     if request.method == 'POST':
-#         order_form = OrderForm(request.POST)
-#         order_product_formset = OrderProductFormSet(request.POST)
-
-#         if order_form.is_valid() and order_product_formset.is_valid():
-#             order = order_form.save()
-#             for form in order_product_formset:
-#                 order_product = form.save(commit=False)
-#                 order_product.order = order
-#                 order_product.save()
-#             return redirect('order_detail', order_id=order.id)
-#     else:
-#         order_form = OrderForm()
-#         order_product_formset = OrderProductFormSet()
-    
-#     return render(request, 'order_form.html', {'order_form': order_form, 'order_product_formset': order_product_formset})
-
-# def order_update(request, order_id):
-#     order = get_object_or_404(Order, id=order_id)
-
-#     if request.method == 'POST':
-#         order_form = OrderForm(request.POST, instance=order)
-#         order_product_formset = OrderProductFormSet(request.POST, instance=order)
-
-#         if order_form.is_valid() and order_product_formset.is_valid():
-#             order_form.save()
-#             order_product_formset.save()
-#             return redirect('order_detail', order_id=order.id)
-#     else:
-#         order_form = OrderForm(instance=order)
-#         order_product_formset = OrderProductFormSet(instance=order)
-    
-#     return render(request, 'order_form.html', {'order_form': order_form, 'order_product_formset': order_product_formset})

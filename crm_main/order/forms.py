@@ -32,6 +32,7 @@ class OrderProductForm(forms.ModelForm):
             'product': forms.Select(attrs={'class': 'form-control'}),
             'quantity': forms.NumberInput(attrs={'class': 'form-control'}),
             'unit_price': forms.NumberInput(attrs={'class': 'form-control'}),
+            'order_date': forms.NumberInput(attrs={'class': 'form-control'}),
         }
-
-OrderProductFormSet = forms.inlineformset_factory(Order, OrderProduct, form=OrderProductForm, extra=1, can_delete=True)
+# this is used to create a formset for the OrderProduct model, it is used to create multiple OrderProduct objects at once.
+# OrderProductFormSet = forms.inlineformset_factory(Order, OrderProduct, form=OrderProductForm, extra=1, can_delete=True) 

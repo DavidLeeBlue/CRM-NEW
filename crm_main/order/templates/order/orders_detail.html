@@ -49,11 +49,18 @@
 </div>
 
   <br/><br/>
-  <a href="{% url 'orders_list' %}" class="btn btn-primary">Back</a>
-  <a href="{% url 'orders_edit' order.id %}" class="btn btn-info">Update Client</a>
-  <a href="{% url 'orders_delete' order.id %}" class="btn btn-danger">Delete</a>
+  <a href="{% url 'orders:list' %}" class="btn btn-primary">Back</a>
+  <a href="{% url 'orders:edit' order.id %}" class="btn btn-info">Update Client</a>
+  <a href="{% url 'orders:delete' order.id %}" class="btn btn-danger">Delete</a>
   
 
  <!-- ------------------------------------------------------- -->
+<hr>
+<form method="post" action="{% url 'clients:add_comment' client.id %" class="my-4">
+  {% csrf_token %}
 
+  {{ form.as_p }}
+
+  <button class="py-2 px-4 rounded-xl bg-blue-500 text-white">Submit</button>
+</form>
  {% endblock %}

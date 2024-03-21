@@ -2,6 +2,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from .models import Userprofile
+from django.contrib.auth.decorators import login_required
 
 # from team.models import Team
 
@@ -18,3 +19,7 @@ def signup(request):
     return render(request, 'userprofile/signup.html',{
         'form':form
     })
+
+# @login_required
+# def myaccount(request):
+#     return render(request, 'userprofile/myaccount.html')

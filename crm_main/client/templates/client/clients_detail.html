@@ -47,9 +47,9 @@
 </div>
 
   <br/><br/>
-  <a href="{% url 'clients_list' %}" class="btn btn-primary">Back</a>
-  <a href="{% url 'clients_edit' client.id %}" class="btn btn-info">Update Client</a>
-  <a href="{% url 'clients_delete' client.id %}" class="btn btn-danger">Delete</a>
+  <a href="{% url 'clients:list' %}" class="btn btn-primary">Back</a>
+  <a href="{% url 'clients:edit' client.id %}" class="btn btn-info">Update Client</a>
+  <a href="{% url 'clients:delete' client.id %}" class="btn btn-danger">Delete</a>
   
 
  <!-- ------------------------------------------------------- -->

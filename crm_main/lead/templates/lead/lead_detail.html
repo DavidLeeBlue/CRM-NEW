@@ -46,14 +46,14 @@
   
 </div>
 
-<form id="lead_delete_form" method="post" action="{% url 'leads_delete' lead.id %}">
+<form id="lead_delete_form" method="post" action="{% url 'leads:delete' lead.id %}">
   {% csrf_token %}
 </form>
 
   <br/><br/>
-  <a href="{% url 'leads_list' %}" class="btn btn-primary">Back</a>
-  <a href="{% url 'leads_edit' lead.id %}" class="btn btn-info">Update Record</a>
-  <a href="{% url 'leads_convert' lead.id %}" class="btn btn-success">Convert to Client</a>
+  <a href="{% url 'leads:list' %}" class="btn btn-primary">Back</a>
+  <a href="{% url 'leads:edit' lead.id %}" class="btn btn-info">Update Record</a>
+  <a href="{% url 'leads:convert' lead.id %}" class="btn btn-success">Convert to Client</a>
   <a href="#" onclick="document.getElementById('lead_delete_form').submit();" class="btn btn-danger">Delete</a>
   
   <!-- comment below ------------------------------------------ -->

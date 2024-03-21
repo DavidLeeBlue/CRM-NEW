@@ -47,7 +47,7 @@ class LeadDetailView(DetailView):
 
 class LeadDeleteView(DeleteView):
     model = Lead
-    success_url = reverse_lazy('leads_list')
+    success_url = reverse_lazy('leads:list')
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super().dispatch(*args, **kwargs)
@@ -67,7 +67,7 @@ class LeadDeleteView(DeleteView):
 class LeadUpdateView(UpdateView):
     model = Lead
     fields = ('name', 'email', 'description', 'priority', 'status',)
-    success_url = reverse_lazy('leads_list')
+    success_url = reverse_lazy('leads:list')
 
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
@@ -93,7 +93,7 @@ class LeadUpdateView(UpdateView):
 class LeadCreateView(CreateView):
     model = Lead
     fields = ('name', 'email', 'description', 'priority', 'status',)
-    success_url = reverse_lazy('leads_list')
+    success_url = reverse_lazy('leads:list')
 
     
     @method_decorator(login_required)
@@ -130,7 +130,7 @@ class AddCommentView(View):
             comment.lead_id = pk
             comment.save()
 
-        return redirect('leads_detail', pk=pk)
+        return redirect('leads:detail', pk=pk)
 
 class ConvertToClientView(View):
     def get(self,request,*args,**kwargs):
@@ -163,4 +163,4 @@ class ConvertToClientView(View):
 
         messages.success(request, 'The lead was converted to a client.')
 
-        return redirect('leads_list')
+        return redirect('leads:list')

@@ -10,26 +10,22 @@
 
         {% if user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
-        </li>
-        <!-- <li class="nav-item">
-          <a class="nav-link" href="{% url 'add_lead' %}">Add Leads</a>
-        </li> -->
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'leads_list' %}">Leads</a>
+          <a class="nav-link" href="{% url 'dashboard:index' %}">Dashboard</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'clients_list' %}">Clients</a>
+          <a class="nav-link" href="{% url 'leads:list' %}">Leads</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'orders_list' %}">Orders</a>
+          <a class="nav-link" href="{% url 'clients:list' %}">Clients</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'orders:list' %}">Orders</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'order_list' %}">OrdersNew</a>
         </li>
         <li class="nav-item">
-          <!-- <a class="nav-link" href="{% url 'products_list' %}">Products</a> -->
-          <a class="nav-link" href="{% url 'products_list' %}">Products</a>
+          <a class="nav-link" href="{% url 'products:list' %}">Products</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'logout' %}">Logout</a>
@@ -42,7 +38,7 @@
 
         {% else %}
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'signup' %}">Register</a>
+          <a class="nav-link" href="{% url 'userprofile:signup' %}">Register</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="{% url 'login' %}">Login</a>

@@ -30,7 +30,7 @@ def products_delete(request, pk):
     product.delete()
     messages.success(request, 'The Product has been deleted successfully!')
     # return redirect('/dashboard/products')
-    return redirect('products_list')
+    return redirect('products:list')
 
 @login_required
 def products_edit(request, pk):
@@ -41,7 +41,7 @@ def products_edit(request, pk):
             product.save()
             # messages.success(request, Product.name . ' The Product has been edited successfully!')
             messages.success(request, product.name + ' The Product has been edited successfully!')
-            return redirect('products_list')
+            return redirect('products:list')
     else:
         form = AddProductForm(instance=product)
     return render(request, 'product/products_edit.html',{
@@ -58,7 +58,7 @@ def products_add(request):
             product.created_by = request.user
             product.save()
             messages.success(request, 'The Product has been added successfully!')
-            return redirect('products_list')
+            return redirect('products:list')
     else:
         form = AddProductForm()
     return render(request, 'product/products_add.html',{

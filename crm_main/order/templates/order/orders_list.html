@@ -42,7 +42,7 @@
               <!-- <td>{{ order.created_by_id }}</td> -->
               <td>{{ order.created_at }}</td>
               <td>{{ order.modified_at }}</td>
-              <td><a href="{% url 'orders_detail' order.id %}">{{ order.id }}</a></td> 
+              <td><a href="{% url 'orders:detail' order.id %}">{{ order.id }}</a></td> 
         <!-- % url 'order' order.id %} -->
           </tr>
         
@@ -59,7 +59,7 @@
         </tbody>
       
       </table>
-      <a href="{% url 'order_add' %}" class="btn btn-danger">Add order</a>
+      <a href="{% url 'orders:add' %}" class="btn btn-danger">Add order</a>
  {% endblock %}
 
 

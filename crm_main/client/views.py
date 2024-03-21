@@ -27,7 +27,7 @@ def client_add(request):
             lead.created_by = request.user
             lead.save()
             messages.success(request, 'The lead has been added successfully!')
-            return redirect('clients_list')
+            return redirect('clients:list')
     else:
         form = AddClientForm()
     return render(request, 'client/clients_add.html',{
@@ -40,7 +40,7 @@ def clients_delete(request, pk):
     client.delete()
     messages.success(request, client.name + 'The clent has been deleted successfully!')
     # return redirect('/dashboard/clients')
-    return redirect('clients_list')
+    return redirect('clients:list')
 
 @login_required
 def clients_edit(request, pk):
@@ -51,7 +51,7 @@ def clients_edit(request, pk):
             client.save()
             # messages.success(request, lead.name . ' The lead has been edited successfully!')
             messages.success(request, client.name + ' The lead has been edited successfully!')
-            return redirect('clients_list')
+            return redirect('clients:list')
     else:
         form = AddClientForm(instance=client)
     return render(request, 'client/clients_edit.html',{
