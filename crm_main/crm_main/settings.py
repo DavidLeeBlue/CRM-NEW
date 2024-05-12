@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-9n2&=3dmmulbo!g$@r3vseq(#j8%)7x#g=+&f003t&ta4c$e#c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['django.local']
 
 # LOGIN_REDIRECT_URL = 'dashboard'
 LOGIN_REDIRECT_URL = 'dashboard:index'
@@ -90,10 +90,10 @@ WSGI_APPLICATION = 'crm_main.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':'crm-new',
-        'USER':'root',
-        'PASSWORD':'your_root_password',
-        'HOST':'172.22.0.2',
+        'NAME':'crm_new',
+        'USER':'django_user',
+        'PASSWORD':'%^$451Hsyour_password',
+        'HOST':'127.0.0.1',
         'PORT':'3306',
     }
 }
