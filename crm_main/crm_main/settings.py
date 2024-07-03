@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-9n2&=3dmmulbo!g$@r3vseq(#j8%)7x#g=+&f003t&ta4c$e#c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['django.local']
+ALLOWED_HOSTS = ['django.local','127.0.0.1']
 
 # LOGIN_REDIRECT_URL = 'dashboard'
 LOGIN_REDIRECT_URL = 'dashboard:index'
@@ -87,18 +87,27 @@ WSGI_APPLICATION = 'crm_main.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME':'crm_new',
+#         'USER':'django_user',
+#         'PASSWORD':'%^$451Hsyour_password',
+#         'HOST':'127.0.0.1',
+#         'PORT':'3306',
+#     }
+# }
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':'crm_new',
-        'USER':'django_user',
-        'PASSWORD':'%^$451Hsyour_password',
-        'HOST':'127.0.0.1',
-        'PORT':'3306',
+        'NAME': os.getenv('CRM_DB_NAME', 'default_db_name'),
+        'USER': os.getenv('CRM_DB_USER', 'default_user'),
+        'PASSWORD': os.getenv('CRM_DB_PASSWORD', 'default_password'),
+        'HOST': os.getenv('CRM_DB_HOST', 'localhost'),
+        'PORT': os.getenv('CRM_DB_PORT', '3306'),
     }
 }
-
-
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
 
