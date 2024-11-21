@@ -31,10 +31,18 @@
                     <p>Dashboard</p>
                 </a> </li>
 
-                <li class="nav-item"> <a href="{% url 'tickets:list' %}" class="nav-link"> <i class="bi bi-calendar2-plus" style="color: red;"></i>
+
+                <li class="nav-item"> <a href="" class="nav-link"> <i class="bi bi-calendar2-plus" style="color: red;"></i>
                 </i>
                         <p>Tickets</p>
                     </a> </li>
+
+                {% comment %} <li class="nav-item"> <a href="{% url 'tickets:list' %}" class="nav-link"> <i class="bi bi-calendar2-plus" style="color: red;"></i>
+                </i>
+                        <p>Tickets</p>
+                    </a> </li> {% endcomment %}
+
+
 
                 <li class="nav-item"> <a href="{% url 'leads:list' %}" class="nav-link"> <i class="nav-icon bi bi-palette"></i>
                         <p>Leads</p>

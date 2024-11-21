@@ -20,7 +20,7 @@ urlpatterns = [
     path('log-out/',views.LogoutView.as_view() ,name='logout'),
     # path('log-in/', views.LoginView.as_view(template_name='userprofile/login.html', authentication_form=LoginForm), name='login'),
     # path('log-out/', views.LogoutView.as_view(), name='logout'),
-    path('tickets/', include('tickets.urls')),
+    # path('tickets/', include('tickets.urls')),
   
 ]
 
