@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'order',
     'ordernew',
     'dynamic_breadcrumbs',
-    'tickets',
+    'ticket',
+    # 'tickets',
 ]
 
 MIDDLEWARE = [
