@@ -1,10 +1,9 @@
-# views.py
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib import messages
 from django.utils.decorators import method_decorator
-from django.contrib.auth.decorators import login_required
 from django.views import View
 from .models import Ticket, Comment
 from .forms import TicketForm, CommentForm
@@ -18,11 +17,6 @@ class TicketListView(ListView):
     def get_queryset(self):
         return Ticket.objects.filter(created_by=self.request.user)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['page_title'] = 'Ticket List'
-        return context
-
 class TicketDetailView(DetailView):
     model = Ticket
     @method_decorator(login_required)
@@ -32,7 +26,6 @@ class TicketDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = CommentForm()
-        context['page_title'] = 'Ticket Detail'
         return context
 
 class TicketCreateView(CreateView):
@@ -49,11 +42,6 @@ class TicketCreateView(CreateView):
         messages.success(self.request, 'Ticket created successfully!')
         return super().form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['page_title'] = 'Create Ticket'
-        return context
-
 class TicketUpdateView(UpdateView):
     model = Ticket
     form_class = TicketForm
@@ -67,11 +55,6 @@ class TicketUpdateView(UpdateView):
         messages.success(self.request, 'Ticket updated successfully!')
         return super().form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['page_title'] = 'Update Ticket'
-        return context
-
 class TicketDeleteView(DeleteView):
     model = Ticket
     success_url = reverse_lazy('tickets:list')
@@ -83,11 +66,6 @@ class TicketDeleteView(DeleteView):
     def delete(self, request, *args, **kwargs):
         messages.success(self.request, 'Ticket deleted successfully!')
         return super().delete(request, *args, **kwargs)
-
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['page_title'] = 'Delete Ticket'
-        return context
 
 class AddCommentView(View):
     def post(self, request, *args, **kwargs):
