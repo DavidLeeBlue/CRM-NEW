@@ -4,6 +4,10 @@ from django.contrib.auth import views
 from django.urls import path, include
 from core.views import index
 from userprofile.views import signup
+from django.conf import settings
+from django.conf.urls.static import static
+
+
 
 urlpatterns = [
     path('', index, name='index'),
@@ -25,6 +29,8 @@ urlpatterns = [
   
 ]
 
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 """
 URL configuration for crm_main project.
 

@@ -41,3 +41,8 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.created_by.username
+# models.py
+class TicketImage(models.Model):
+    ticket = models.ForeignKey(Ticket, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='ticket_images/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)

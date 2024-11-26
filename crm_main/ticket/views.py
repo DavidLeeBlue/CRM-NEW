@@ -6,8 +6,21 @@ from django.contrib import messages
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views import View
-from .models import Ticket, Comment
-from .forms import TicketForm, CommentForm
+from .models import Ticket, Comment, TicketImage
+from .forms import TicketForm, CommentForm, TicketImageForm
+from django.forms import modelformset_factory
+
+# views.py
+# from django.shortcuts import render
+# from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+# from django.urls import reverse_lazy
+# from django.contrib import messages
+# from django.utils.decorators import method_decorator
+# from django.contrib.auth.decorators import login_required
+# from django.views import View
+# from .models import Ticket, TicketImage
+# from .forms import TicketForm, TicketImageForm
+
 
 class TicketListView(ListView):
     model = Ticket
@@ -35,6 +48,10 @@ class TicketDetailView(DetailView):
         context['page_title'] = 'Ticket Detail'
         return context
 
+# views.py
+
+
+
 class TicketCreateView(CreateView):
     model = Ticket
     form_class = TicketForm
@@ -46,11 +63,16 @@ class TicketCreateView(CreateView):
 
     def form_valid(self, form):
         form.instance.created_by = self.request.user
+        response = super().form_valid(form)
+        files = self.request.FILES.getlist('image')
+        for file in files:
+            TicketImage.objects.create(ticket=self.object, image=file)
         messages.success(self.request, 'Ticket created successfully!')
-        return super().form_valid(form)
+        return response
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['image_form'] = TicketImageForm()
         context['page_title'] = 'Create Ticket'
         return context
 
@@ -64,11 +86,16 @@ class TicketUpdateView(UpdateView):
         return super(TicketUpdateView, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):
+        response = super().form_valid(form)
+        files = self.request.FILES.getlist('image')
+        for file in files:
+            TicketImage.objects.create(ticket=self.object, image=file)
         messages.success(self.request, 'Ticket updated successfully!')
-        return super().form_valid(form)
+        return response
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['image_form'] = TicketImageForm()
         context['page_title'] = 'Update Ticket'
         return context
 

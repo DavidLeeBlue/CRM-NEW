@@ -14,6 +14,12 @@
         <p class="card-text"><strong>Created at: </strong>{{ ticket.created_at }}</p>
         <p class="card-text"><strong>Modified at: </strong>{{ ticket.modified_at }}</p>
         <p class="card-text"><strong>ID: </strong>{{ ticket.id }}</p>
+        <div class="card-text"><strong>Images: </strong>
+            {% for image in ticket.images.all %}
+                <img src="{{ image.image.url }}" alt="Ticket Image" style="max-width: 200px; max-height: 200px;"/>
+                {% comment %} <img src="https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1uayLD.img?w=800&h=435&q=60&m=2&f=jpg" alt="Ticket Image" style="max-width: 200px; max-height: 200px;"/> {% endcomment %}
+            {% endfor %}
+        </div>
     </div>
 </div>
 
