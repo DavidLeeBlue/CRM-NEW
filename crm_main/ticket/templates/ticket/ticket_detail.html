@@ -46,6 +46,33 @@
     </div>
 </div>
 
+
+
+
+<!-- Display comments -->
+<h2>Comments</h2>
+<div>
+    {% for comment in comments %}
+        <p><strong>{{ comment.created_by }}</strong> {{ comment.created_at }}</p>
+        <p>{{ comment.content }}</p>
+        {% if comment.image %}
+            <img src="{{ comment.image.url }}" alt="Comment Image" style="max-width: 300px; max-height: 300px; cursor: pointer;" 
+            loading="lazy">
+        {% endif %}
+    {% endfor %}
+</div>
+
+<!-- Comment form -->
+<h2>Add a comment</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Submit</button>
+</form>
+
+
+
+
 <form id="ticket_delete_form" method="post" action="{% url 'tickets:delete' ticket.id %}">
     {% csrf_token %}
 </form>

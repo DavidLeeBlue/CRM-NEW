@@ -1,5 +1,5 @@
 # views.py
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 from django.contrib import messages
@@ -9,6 +9,8 @@ from django.views import View
 from .models import Ticket, Comment, TicketImage
 from .forms import TicketForm, CommentForm, TicketImageForm
 from django.forms import modelformset_factory
+from django.views.generic.edit import FormMixin
+
 
 # views.py
 # from django.shortcuts import render
@@ -36,17 +38,46 @@ class TicketListView(ListView):
         context['page_title'] = 'Ticket List'
         return context
 
-class TicketDetailView(DetailView):
+# class TicketDetailView(DetailView):
+#     model = Ticket
+#     @method_decorator(login_required)
+#     def dispatch(self, *args, **kwargs):
+#         return super(TicketDetailView, self).dispatch(*args, **kwargs)
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['form'] = CommentForm()
+#         context['page_title'] = 'Ticket Detail'
+#         return context
+class TicketDetailView(FormMixin, DetailView):
     model = Ticket
+    form_class = CommentForm
+
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(TicketDetailView, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['form'] = CommentForm()
+        context['form'] = self.get_form()
+        context['comments'] = self.object.comments.all()
         context['page_title'] = 'Ticket Detail'
         return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        form = self.get_form()
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        comment = form.save(commit=False)
+        comment.created_by = self.request.user
+        comment.ticket = self.get_object()
+        comment.save()
+        return redirect('tickets:detail', pk=comment.ticket.pk)
 
 # views.py
 
