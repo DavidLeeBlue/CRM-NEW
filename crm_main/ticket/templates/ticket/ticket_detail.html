@@ -3,30 +3,34 @@
 {% block title %}Ticket Details{% endblock %}
 
 {% block content %}
-<div class="card">
-    <div class="card-header"><strong>{{ ticket.name }}</strong></div>
+<div class="card mb-4">
+    <div class="card-header">
+        <h3 class="card-title">{{ ticket.title }}</h3>
+    </div>
     <div class="card-body">
-        <p class="card-text"><strong>Title: </strong>{{ ticket.title }}</p>
-        <p class="card-text"><strong>Description: </strong>{{ ticket.description }}</p>
-        <p class="card-text"><strong>Priority: </strong>{{ ticket.priority }}</p>
-        <p class="card-text"><strong>Status: </strong>{{ ticket.status }}</p>
-        <p class="card-text"><strong>Created by: </strong>{{ ticket.created_by }}</p>
-        <p class="card-text"><strong>Created at: </strong>{{ ticket.created_at }}</p>
-        <p class="card-text"><strong>Modified at: </strong>{{ ticket.modified_at }}</p>
-        <p class="card-text"><strong>ID: </strong>{{ ticket.id }}</p>
-        <div class="card-text"><strong>Images: </strong>
-            {% for image in ticket.images.all %}
-                <img src="{{ image.image.url }}" 
-                     alt="Ticket Image" 
-                     style="max-width: 100px; max-height: 100px; cursor: pointer;" 
-                     loading="lazy"
-                     data-bs-toggle="modal" 
-                     data-bs-target="#imageModal" 
-                     data-image-url="{{ image.image.url }}" 
-                     onerror="this.src='/static/img/default-image.png';"
-                     role="button" 
-                     aria-label="View full-size image"/>
-            {% endfor %}
+        <p class="card-text"><strong>Description:</strong> {{ ticket.description }}</p>
+        <p class="card-text"><strong>Priority:</strong> {{ ticket.priority }}</p>
+        <p class="card-text"><strong>Status:</strong> {{ ticket.status }}</p>
+        <p class="card-text"><strong>Created by:</strong> {{ ticket.created_by }}</p>
+        <p class="card-text"><strong>Created at:</strong> {{ ticket.created_at }}</p>
+        <p class="card-text"><strong>Modified at:</strong> {{ ticket.modified_at }}</p>
+        <p class="card-text"><strong>ID:</strong> {{ ticket.id }}</p>
+        <div class="card-text"><strong>Images:</strong>
+            <div class="d-flex flex-wrap">
+                {% for image in ticket.images.all %}
+                    <img src="{{ image.image.url }}" 
+                         alt="Ticket Image" 
+                         class="img-thumbnail m-2" 
+                         style="max-width: 100px; max-height: 100px; cursor: pointer;" 
+                         loading="lazy"
+                         data-bs-toggle="modal" 
+                         data-bs-target="#imageModal" 
+                         data-image-url="{{ image.image.url }}" 
+                         onerror="this.src='/static/img/default-image.png';"
+                         role="button" 
+                         aria-label="View full-size image"/>
+                {% endfor %}
+            </div>
         </div>
     </div>
 </div>
@@ -40,48 +44,56 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <img id="modalImage" src="" alt="Full-size image" style="width: 100%; height: auto;">
+                <img id="modalImage" src="" alt="Full-size image" class="img-fluid">
             </div>
         </div>
     </div>
 </div>
 
-
-
-
 <!-- Display comments -->
-<h2>Comments</h2>
-<div>
-    {% for comment in comments %}
-        <p><strong>{{ comment.created_by }}</strong> {{ comment.created_at }}</p>
-        <p>{{ comment.content }}</p>
-        {% if comment.image %}
-            <img src="{{ comment.image.url }}" alt="Comment Image" style="max-width: 300px; max-height: 300px; cursor: pointer;" 
-            loading="lazy">
-        {% endif %}
-        <br/>-----------------------------------------------------------------
-    {% endfor %}
+<div class="card mb-4">
+    <div class="card-header">
+        <h3 class="card-title">Comments</h3>
+    </div>
+    <div class="card-body">
+        {% for comment in comments %}
+            <div class="mb-3">
+                <p><strong>{{ comment.created_by }}</strong> <small class="text-muted">{{ comment.created_at }}</small></p>
+                <p>{{ comment.content }}</p>
+                {% if comment.image %}
+                    <img src="{{ comment.image.url }}" alt="Comment Image" class="img-thumbnail" style="max-width: 300px; max-height: 300px; cursor: pointer;" loading="lazy">
+                {% endif %}
+                <hr>
+            </div>
+        {% endfor %}
+    </div>
 </div>
 
 <!-- Comment form -->
-<h2>Add a comment</h2>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Submit</button>
-</form>
-
-
-
+<div class="card mb-4">
+    <div class="card-header">
+        <h3 class="card-title">Add a Comment</h3>
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
 
 <form id="ticket_delete_form" method="post" action="{% url 'tickets:delete' ticket.id %}">
     {% csrf_token %}
 </form>
 
-<br/><br/>
-<a href="{% url 'tickets:list' %}" class="btn btn-primary">Back</a>
-<a href="{% url 'tickets:update' ticket.id %}" class="btn btn-info">Update Record</a>
-<a href="#" onclick="document.getElementById('ticket_delete_form').submit();" class="btn btn-danger">Delete</a>
+<div class="d-flex justify-content-between mt-4">
+    <a href="{% url 'tickets:list' %}" class="btn btn-secondary">Back</a>
+    <div>
+        <a href="{% url 'tickets:update' ticket.id %}" class="btn btn-info">Update Record</a>
+        <a href="#" onclick="document.getElementById('ticket_delete_form').submit();" class="btn btn-danger">Delete</a>
+    </div>
+</div>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
