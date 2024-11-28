@@ -18,7 +18,7 @@
             {% for image in ticket.images.all %}
                 <img src="{{ image.image.url }}" 
                      alt="Ticket Image" 
-                     style="max-width: 300px; max-height: 300px; cursor: pointer;" 
+                     style="max-width: 100px; max-height: 100px; cursor: pointer;" 
                      loading="lazy"
                      data-bs-toggle="modal" 
                      data-bs-target="#imageModal" 
@@ -59,6 +59,7 @@
             <img src="{{ comment.image.url }}" alt="Comment Image" style="max-width: 300px; max-height: 300px; cursor: pointer;" 
             loading="lazy">
         {% endif %}
+        <br/>-----------------------------------------------------------------
     {% endfor %}
 </div>
 
