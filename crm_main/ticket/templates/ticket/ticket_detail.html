@@ -16,9 +16,32 @@
         <p class="card-text"><strong>ID: </strong>{{ ticket.id }}</p>
         <div class="card-text"><strong>Images: </strong>
             {% for image in ticket.images.all %}
-                <img src="{{ image.image.url }}" alt="Ticket Image" style="max-width: 200px; max-height: 200px;"/>
-                {% comment %} <img src="https://img-s-msn-com.akamaized.net/tenant/amp/entityid/AA1uayLD.img?w=800&h=435&q=60&m=2&f=jpg" alt="Ticket Image" style="max-width: 200px; max-height: 200px;"/> {% endcomment %}
+                <img src="{{ image.image.url }}" 
+                     alt="Ticket Image" 
+                     style="max-width: 300px; max-height: 300px; cursor: pointer;" 
+                     loading="lazy"
+                     data-bs-toggle="modal" 
+                     data-bs-target="#imageModal" 
+                     data-image-url="{{ image.image.url }}" 
+                     onerror="this.src='/static/img/default-image.png';"
+                     role="button" 
+                     aria-label="View full-size image"/>
             {% endfor %}
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Image Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" src="" alt="Full-size image" style="width: 100%; height: auto;">
+            </div>
         </div>
     </div>
 </div>
@@ -31,4 +54,16 @@
 <a href="{% url 'tickets:list' %}" class="btn btn-primary">Back</a>
 <a href="{% url 'tickets:update' ticket.id %}" class="btn btn-info">Update Record</a>
 <a href="#" onclick="document.getElementById('ticket_delete_form').submit();" class="btn btn-danger">Delete</a>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var imageModal = document.getElementById('imageModal');
+        imageModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var imageUrl = button.getAttribute('data-image-url');
+            var modalImage = document.getElementById('modalImage');
+            modalImage.src = imageUrl;
+        });
+    });
+</script>
 {% endblock %}
