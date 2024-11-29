@@ -6,26 +6,13 @@ from django.contrib import messages
 from django.utils.decorators import method_decorator
 from django.contrib.auth.decorators import login_required
 from django.views import View
-from .models import Ticket, Comment, TicketImage
-from .forms import TicketForm, CommentForm, TicketImageForm
-from django.forms import modelformset_factory
+from .models import Ticket, Comment, TicketImage, CommentImage
+from .forms import TicketForm, CommentForm, TicketImageForm, CommentImageForm
 from django.views.generic.edit import FormMixin
-
-
-# views.py
-# from django.shortcuts import render
-# from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-# from django.urls import reverse_lazy
-# from django.contrib import messages
-# from django.utils.decorators import method_decorator
-# from django.contrib.auth.decorators import login_required
-# from django.views import View
-# from .models import Ticket, TicketImage
-# from .forms import TicketForm, TicketImageForm
-
 
 class TicketListView(ListView):
     model = Ticket
+
     @method_decorator(login_required)
     def dispatch(self, *args, **kwargs):
         return super(TicketListView, self).dispatch(*args, **kwargs)
@@ -38,17 +25,6 @@ class TicketListView(ListView):
         context['page_title'] = 'Ticket List'
         return context
 
-# class TicketDetailView(DetailView):
-#     model = Ticket
-#     @method_decorator(login_required)
-#     def dispatch(self, *args, **kwargs):
-#         return super(TicketDetailView, self).dispatch(*args, **kwargs)
-
-#     def get_context_data(self, **kwargs):
-#         context = super().get_context_data(**kwargs)
-#         context['form'] = CommentForm()
-#         context['page_title'] = 'Ticket Detail'
-#         return context
 class TicketDetailView(FormMixin, DetailView):
     model = Ticket
     form_class = CommentForm
@@ -60,6 +36,7 @@ class TicketDetailView(FormMixin, DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = self.get_form()
+        context['image_form'] = CommentImageForm()
         context['comments'] = self.object.comments.all()
         context['page_title'] = 'Ticket Detail'
         return context
@@ -67,21 +44,20 @@ class TicketDetailView(FormMixin, DetailView):
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
         form = self.get_form()
-        if form.is_valid():
-            return self.form_valid(form)
+        image_form = CommentImageForm(request.POST, request.FILES)
+        if form.is_valid() and image_form.is_valid():
+            return self.form_valid(form, image_form)
         else:
             return self.form_invalid(form)
 
-    def form_valid(self, form):
+    def form_valid(self, form, image_form):
         comment = form.save(commit=False)
         comment.created_by = self.request.user
         comment.ticket = self.get_object()
         comment.save()
+        for image in self.request.FILES.getlist('images'):
+            CommentImage.objects.create(comment=comment, image=image)
         return redirect('tickets:detail', pk=comment.ticket.pk)
-
-# views.py
-
-
 
 class TicketCreateView(CreateView):
     model = Ticket
@@ -151,11 +127,14 @@ class AddCommentView(View):
     def post(self, request, *args, **kwargs):
         pk = kwargs.get('pk')
         form = CommentForm(request.POST)
+        image_form = CommentImageForm(request.POST, request.FILES)
 
-        if form.is_valid():
+        if form.is_valid() and image_form.is_valid():
             comment = form.save(commit=False)
             comment.created_by = request.user
             comment.ticket_id = pk
             comment.save()
+            for image in request.FILES.getlist('images'):
+                CommentImage.objects.create(comment=comment, image=image)
 
-        return redirect('ticket:detail', pk=pk)
+        return redirect('tickets:detail', pk=pk)

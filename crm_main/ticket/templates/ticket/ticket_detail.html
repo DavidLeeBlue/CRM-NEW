@@ -56,13 +56,25 @@
         <h3 class="card-title">Comments</h3>
     </div>
     <div class="card-body">
-        {% for comment in comments %}
+        {% for comment in ticket.comments.all %}
             <div class="mb-3">
                 <p><strong>{{ comment.created_by }}</strong> <small class="text-muted">{{ comment.created_at }}</small></p>
                 <p>{{ comment.content }}</p>
-                {% if comment.image %}
-                    <img src="{{ comment.image.url }}" alt="Comment Image" class="img-thumbnail" style="max-width: 300px; max-height: 300px; cursor: pointer;" loading="lazy">
-                {% endif %}
+                <div class="d-flex flex-wrap">
+                    {% for image in comment.images.all %}
+                        <img src="{{ image.image.url }}" 
+                             alt="Comment Image" 
+                             class="img-thumbnail m-2" 
+                             style="max-width: 100px; max-height: 100px; cursor: pointer;" 
+                             loading="lazy"
+                             data-bs-toggle="modal" 
+                             data-bs-target="#imageModal" 
+                             data-image-url="{{ image.image.url }}" 
+                             onerror="this.src='/static/img/default-image.png';"
+                             role="button" 
+                             aria-label="View full-size image"/>
+                    {% endfor %}
+                </div>
                 <hr>
             </div>
         {% endfor %}
@@ -78,6 +90,10 @@
         <form method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}
+            <div class="form-group">
+                <label for="id_images">Images:</label>
+                <input type="file" name="images" id="id_images" class="form-control" multiple>
+            </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>

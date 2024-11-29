@@ -5,17 +5,17 @@
 {% block content %}
 <style>
     .table-hover tbody tr:hover {
-        background-color: #f5f5f5;
+        background-color: #e9ecef;
     }
 </style>
 
 <div class="card mb-4">
     <div class="card-header">
-        <h3 class="card-title">Tenants Information</h3>
+        <h3 class="card-title">Ticket Information</h3>
     </div> <!-- /.card-header -->
     <div class="card-body">
-        <table class="table table-bordered table-hover">
-            <thead>
+        <table class="table table-bordered table-hover table-striped">
+            <thead class="table-dark">
                 <tr>
                     <th style="width: 10px">#</th>
                     <th>Title</th>
@@ -23,33 +23,47 @@
                     <th>Priority</th>
                     <th>Status</th>
                     {% comment %} <th>Occupation</th> {% endcomment %}
-                    <th>Created_by</th>
-                    <th>Created_at</th>
-                    <th>Modified_at</th>
+                    <th>Created by</th>
+                    <th>Created at</th>
+                    <th>Modified at</th>
                 </tr>
             </thead>
             <tbody>
                 {% if object_list %}
                     {% for ticket in object_list %}
                         <tr class="align-middle">
-                            <td><a href="{% url 'tickets:detail' ticket.id %}">{{ ticket.id }}</a></td>
+                            {% comment %} <td><a href="{% url 'tickets:detail' ticket.id %}">{{ ticket.id }}</a></td> {% endcomment %}
+                            <td>{{ ticket.id }}</td>
                             <td><a href="{% url 'tickets:detail' ticket.id %}">{{ ticket.title }}</a></td>
                             <td>{{ ticket.description }}</td>
-                            <td>{{ ticket.priority }}</td>
+                            <td>
+                                {% if ticket.priority == 'high' %}
+                                    <span class="badge  rounded-pill text-bg-danger">{{ ticket.priority }}</span>
+                                {% elif ticket.priority == 'medium' %}
+                                    <span class="badge  rounded-pill text-bg-primary">{{ ticket.priority }}</span>
+                                {% elif ticket.priority == 'low' %}
+                                    <span class="badge  rounded-pill text-bg-success">{{ ticket.priority }}</span>
+                                {% else %}
+                                    {{ ticket.priority }}
+                                {% endif %}
+                            </td>
                             <td>{{ ticket.status }}</td>
                             <td>{{ ticket.created_by }}</td>
                             <td>{{ ticket.created_at }}</td>
                             <td>{{ ticket.modified_at }}</td>
+                            
                         </tr>
                     {% endfor %}
                 {% else %}
                     <tr>
-                        <td colspan="8">No tickets found</td>
+                        <td colspan="8" class="text-center">No tickets found</td>
                     </tr>
                 {% endif %}
             </tbody>
         </table>
     </div> <!-- /.card-body -->
-
-    <a href="{% url 'tickets:add_ticket' %}" class="btn btn-danger">Add Ticket</a>
+    <div class="card-footer text-end">
+        <a href="{% url 'tickets:add_ticket' %}" class="btn btn-danger">Add Ticket</a>
+    </div>
+</div>
 {% endblock %}

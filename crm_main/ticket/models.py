@@ -33,17 +33,21 @@ class Ticket(models.Model):
     def __str__(self):
         return self.title
 
+class TicketImage(models.Model):
+    ticket = models.ForeignKey(Ticket, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='ticket_images/')
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
 class Comment(models.Model):
     ticket = models.ForeignKey(Ticket, related_name='comments', on_delete=models.CASCADE)
     content = models.TextField(blank=True, null=True)
     created_by = models.ForeignKey(User, related_name='ticket_comments', on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
-    image = models.ImageField(upload_to='comment_images/', blank=True, null=True)
 
     def __str__(self):
         return self.created_by.username
-# models.py
-class TicketImage(models.Model):
-    ticket = models.ForeignKey(Ticket, related_name='images', on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='ticket_images/')
+
+class CommentImage(models.Model):
+    comment = models.ForeignKey(Comment, related_name='images', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='comment_images/')
     uploaded_at = models.DateTimeField(auto_now_add=True)
