@@ -4,7 +4,7 @@ from .models import Property, PropertyImage, PropertyComment, PropertyCommentIma
 class PropertyForm(forms.ModelForm):
     class Meta:
         model = Property
-        fields = ('title', 'description', 'address',)
+        fields = ('title', 'description', 'address',    'type', 'status', 'rooms')
 
 class PropertyImageForm(forms.ModelForm):
     image = forms.ImageField(widget=forms.FileInput(), required=False)

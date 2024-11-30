@@ -21,6 +21,9 @@
                     <th>Title</th>
                     <th>Description</th>
                     <th>Address</th>
+                    <th>Type</th>
+                    <th>Status</th>
+                    <th>Rooms</th>
                     <th>Created by</th>
                     <th>Created at</th>
                     <th>Modified at</th>
@@ -34,6 +37,9 @@
                             <td><a href="{% url 'properties:detail' property.id %}">{{ property.title }}</a></td>
                             <td>{{ property.description }}</td>
                             <td>{{ property.address }}</td>
+                            <td>{{ property.get_type_display }}</td>
+                            <td>{{ property.get_status_display }}</td>
+                            <td>{{ property.rooms }}</td>
                             <td>{{ property.created_by }}</td>
                             <td>{{ property.created_at }}</td>
                             <td>{{ property.modified_at }}</td>
@@ -41,7 +47,7 @@
                     {% endfor %}
                 {% else %}
                     <tr>
-                        <td colspan="7" class="text-center">No properties found</td>
+                        <td colspan="10" class="text-center">No properties found</td>
                     </tr>
                 {% endif %}
             </tbody>

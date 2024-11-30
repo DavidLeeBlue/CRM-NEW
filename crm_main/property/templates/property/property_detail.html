@@ -10,6 +10,9 @@
     <div class="card-body">
         <p class="card-text"><strong>Description:</strong> {{ property.description }}</p>
         <p class="card-text"><strong>Address:</strong> {{ property.address }}</p>
+        <p class="card-text"><strong>Type:</strong> {{ property.get_type_display }}</p>
+        <p class="card-text"><strong>Status:</strong> {{ property.get_status_display }}</p>
+        <p class="card-text"><strong>Rooms:</strong> {{ property.rooms }}</p>
         <p class="card-text"><strong>Created by:</strong> {{ property.created_by }}</p>
         <p class="card-text"><strong>Created at:</strong> {{ property.created_at }}</p>
         <p class="card-text"><strong>Modified at:</strong> {{ property.modified_at }}</p>
