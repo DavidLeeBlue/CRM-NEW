@@ -26,6 +26,7 @@ urlpatterns = [
     # path('log-out/', views.LogoutView.as_view(), name='logout'),
     # path('tickets/', include('tickets.urls')),
     path('tickets/', include('ticket.urls')),
+    path('properties/', include('property.urls')),
   
 ]
 

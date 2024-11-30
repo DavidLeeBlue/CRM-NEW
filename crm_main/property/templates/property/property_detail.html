@@ -1,0 +1,124 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Property Details{% endblock %}
+
+{% block content %}
+<div class="card mb-4">
+    <div class="card-header">
+        <h3 class="card-title">{{ property.title }}</h3>
+    </div>
+    <div class="card-body">
+        <p class="card-text"><strong>Description:</strong> {{ property.description }}</p>
+        <p class="card-text"><strong>Address:</strong> {{ property.address }}</p>
+        <p class="card-text"><strong>Created by:</strong> {{ property.created_by }}</p>
+        <p class="card-text"><strong>Created at:</strong> {{ property.created_at }}</p>
+        <p class="card-text"><strong>Modified at:</strong> {{ property.modified_at }}</p>
+        <p class="card-text"><strong>ID:</strong> {{ property.id }}</p>
+        <div class="card-text"><strong>Images:</strong>
+            <div class="d-flex flex-wrap">
+                {% for image in property.images.all %}
+                    <img src="{{ image.image.url }}" 
+                         alt="Property Image" 
+                         class="img-thumbnail m-2" 
+                         style="max-width: 100px; max-height: 100px; cursor: pointer;" 
+                         loading="lazy"
+                         data-bs-toggle="modal" 
+                         data-bs-target="#imageModal" 
+                         data-image-url="{{ image.image.url }}" 
+                         onerror="this.src='/static/img/default-image.png';"
+                         role="button" 
+                         aria-label="View full-size image"/>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="imageModal" tabindex="-1" aria-labelledby="imageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="imageModalLabel">Image Preview</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <img id="modalImage" src="" alt="Full-size image" class="img-fluid">
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Display comments -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h3 class="card-title">Comments</h3>
+    </div>
+    <div class="card-body">
+        {% for comment in property.comments.all %}
+            <div class="mb-3">
+                <p><strong>{{ comment.created_by }}</strong> <small class="text-muted">{{ comment.created_at }}</small></p>
+                <p>{{ comment.content }}</p>
+                <div class="d-flex flex-wrap">
+                    {% for image in comment.images.all %}
+                        <img src="{{ image.image.url }}" 
+                             alt="Comment Image" 
+                             class="img-thumbnail m-2" 
+                             style="max-width: 100px; max-height: 100px; cursor: pointer;" 
+                             loading="lazy"
+                             data-bs-toggle="modal" 
+                             data-bs-target="#imageModal" 
+                             data-image-url="{{ image.image.url }}" 
+                             onerror="this.src='/static/img/default-image.png';"
+                             role="button" 
+                             aria-label="View full-size image"/>
+                    {% endfor %}
+                </div>
+                <hr>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<!-- Comment form -->
+<div class="card mb-4">
+    <div class="card-header">
+        <h3 class="card-title">Add a Comment</h3>
+    </div>
+    <div class="card-body">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="form-group">
+                <label for="id_images">Images:</label>
+                <input type="file" name="images" id="id_images" class="form-control" multiple>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</div>
+
+<form id="property_delete_form" method="post" action="{% url 'properties:delete' property.id %}">
+    {% csrf_token %}
+</form>
+
+<div class="d-flex justify-content-between mt-4">
+    <a href="{% url 'properties:list' %}" class="btn btn-secondary">Back</a>
+    <div>
+        <a href="{% url 'properties:update' property.id %}" class="btn btn-info">Update Record</a>
+        <a href="#" onclick="document.getElementById('property_delete_form').submit();" class="btn btn-danger">Delete</a>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var imageModal = document.getElementById('imageModal');
+        imageModal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;
+            var imageUrl = button.getAttribute('data-image-url');
+            var modalImage = document.getElementById('modalImage');
+            modalImage.src = imageUrl;
+        });
+    });
+</script>
+{% endblock %}
