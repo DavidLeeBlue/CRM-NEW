@@ -14,6 +14,21 @@
         <h3 class="card-title">Ticket Information</h3>
     </div> <!-- /.card-header -->
     <div class="card-body">
+        <form method="get" class="mb-4">
+            <div class="row">
+                <div class="col-md-4">
+                    <select name="priority" class="form-select">
+                        <option value="">All Priorities</option>
+                        {% for value, label in priorities %}
+                            <option value="{{ value }}" {% if value == selected_priority %}selected{% endif %}>{{ label }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                </div>
+            </div>
+        </form>
         <table class="table table-bordered table-hover table-striped">
             <thead class="table-dark">
                 <tr>
@@ -22,7 +37,6 @@
                     <th>Description</th>
                     <th>Priority</th>
                     <th>Status</th>
-                    {% comment %} <th>Occupation</th> {% endcomment %}
                     <th>Created by</th>
                     <th>Created at</th>
                     <th>Modified at</th>
@@ -32,17 +46,16 @@
                 {% if object_list %}
                     {% for ticket in object_list %}
                         <tr class="align-middle">
-                            {% comment %} <td><a href="{% url 'tickets:detail' ticket.id %}">{{ ticket.id }}</a></td> {% endcomment %}
                             <td>{{ ticket.id }}</td>
                             <td><a href="{% url 'tickets:detail' ticket.id %}">{{ ticket.title }}</a></td>
                             <td>{{ ticket.description }}</td>
                             <td>
                                 {% if ticket.priority == 'high' %}
-                                    <span class="badge  rounded-pill text-bg-danger">{{ ticket.priority }}</span>
+                                    <span class="badge rounded-pill text-bg-danger">{{ ticket.priority }}</span>
                                 {% elif ticket.priority == 'medium' %}
-                                    <span class="badge  rounded-pill text-bg-primary">{{ ticket.priority }}</span>
+                                    <span class="badge rounded-pill text-bg-primary">{{ ticket.priority }}</span>
                                 {% elif ticket.priority == 'low' %}
-                                    <span class="badge  rounded-pill text-bg-success">{{ ticket.priority }}</span>
+                                    <span class="badge rounded-pill text-bg-success">{{ ticket.priority }}</span>
                                 {% else %}
                                     {{ ticket.priority }}
                                 {% endif %}
@@ -51,7 +64,6 @@
                             <td>{{ ticket.created_by }}</td>
                             <td>{{ ticket.created_at }}</td>
                             <td>{{ ticket.modified_at }}</td>
-                            
                         </tr>
                     {% endfor %}
                 {% else %}

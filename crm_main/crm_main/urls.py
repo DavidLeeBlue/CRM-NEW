@@ -27,6 +27,7 @@ urlpatterns = [
     # path('tickets/', include('tickets.urls')),
     path('tickets/', include('ticket.urls')),
     path('properties/', include('property.urls')),
+    path('tenants/', include('tenant.urls')),
   
 ]
 

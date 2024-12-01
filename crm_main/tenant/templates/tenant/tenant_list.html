@@ -1,0 +1,58 @@
+{% extends 'core/base.html' %}
+
+{% block title %}Tenants List{% endblock %}
+
+{% block content %}
+<style>
+    .table-hover tbody tr:hover {
+        background-color: #e9ecef;
+    }
+</style>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h3 class="card-title">Tenant Information</h3>
+    </div> <!-- /.card-header -->
+    <div class="card-body">
+        <table class="table table-bordered table-hover table-striped">
+            <thead class="table-dark">
+                <tr>
+                    <th style="width: 10px">#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone Number</th>
+                    <th>Address</th>
+                    <th>Property</th>
+                    <th>Room Number</th>
+                    <th>Created at</th>
+                    <th>Modified at</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if object_list %}
+                    {% for tenant in object_list %}
+                        <tr class="align-middle">
+                            <td>{{ tenant.id }}</td>
+                            <td><a href="{% url 'tenant:detail' tenant.id %}">{{ tenant.name }}</a></td>
+                            <td>{{ tenant.email }}</td>
+                            <td>{{ tenant.phone_number }}</td>
+                            <td>{{ tenant.address }}</td>
+                            <td>{{ tenant.property }}</td>
+                            <td>{{ tenant.room_number }}</td>
+                            <td>{{ tenant.created_at }}</td>
+                            <td>{{ tenant.modified_at }}</td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="9" class="text-center">No tenants found</td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+    </div> <!-- /.card-body -->
+    <div class="card-footer text-end">
+        <a href="{% url 'tenant:create' %}" class="btn btn-danger">Add Tenant</a>
+    </div>
+</div>
+{% endblock %}

@@ -18,11 +18,17 @@ class TicketListView(ListView):
         return super(TicketListView, self).dispatch(*args, **kwargs)
 
     def get_queryset(self):
-        return Ticket.objects.filter(created_by=self.request.user)
+        queryset = Ticket.objects.filter(created_by=self.request.user)
+        priority = self.request.GET.get('priority')
+        if priority:
+            queryset = queryset.filter(priority=priority)
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['page_title'] = 'Ticket List'
+        context['priorities'] = Ticket.CHOICES_PRIORITY
+        context['selected_priority'] = self.request.GET.get('priority', '')
         return context
 
 class TicketDetailView(FormMixin, DetailView):

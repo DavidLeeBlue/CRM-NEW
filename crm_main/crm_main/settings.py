@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'dynamic_breadcrumbs',
     'ticket',
     'property',
+    'tenant',
     
 ]
 
